@@ -1,5 +1,5 @@
 # Lexify
-![hlogo](https://github.com/user-attachments/assets/9b3939c5-0fa9-4211-a87a-c41319a91168)
+![hlogo](https://github.com/user-attachments/assets/b2e516ec-0f5d-47f4-b0b7-49b1ce10f5ee)
 
 'Lexify' is a tool to automate the creation of vocabulary flashcards. 'Lexify' will search up definitions for each word or expression (included in a list by the user) on the official Cambridge Dictionary and will make a '.csv' file ready to be imported in 'Brainscape'.
 

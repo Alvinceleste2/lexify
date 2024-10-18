@@ -1,6 +1,5 @@
 import csv
 import os
-import sys
 import argparse
 
 DEFAULT_PARSE_FILENAME = "aux.txt"
@@ -29,6 +28,10 @@ def transform_type(string):
         return " adjective"
     elif string == "adv":
         return " adv"
+    elif string == "id":
+        return " idiom"
+    elif string == "col":
+        return " collocation"
     else:
         return None
 
@@ -53,7 +56,9 @@ def readWords(words_file):
         while "(" in d and ")" in d:
             word_type = d[d.index("(") + 1 : d.index(")")]
             d = d.replace(f"({word_type})", "")
-            types.append(transform_type(word_type))
+            tt = transform_type(word_type)
+            if tt is not None:
+                types.append(tt)
         words[d] = types
     file.close()
 
@@ -71,8 +76,7 @@ def createDefStrings(data):
     return string
 
 
-def writeFile(word, word_type, pronuntiation, data):
-    global filename
+def writeFile(filename, word, word_type, pronuntiation, data):
     f = open(filename, "a", encoding="UTF8", newline="")
     writer = csv.writer(f)
     writer.writerow([word, pronuntiation, word_type, createDefStrings(data)])
@@ -80,15 +84,22 @@ def writeFile(word, word_type, pronuntiation, data):
 
 
 # returns 0 on success, -1 if camb did not work properly, -2 if the word could be found but did not match any word types selected
-def parseFile(word):
-    global filename, words
+def parseFile(word, filename):
+    global words
 
     f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
     # If len(empty) != 1 means that the answer has not been properly extracted
-    if len(f.readline()) != 1:
+    # TODO: erase "idiom" condition if cambridge issue is closed
+    if len(line := f.readline()) != 1 and " idiom" not in words[word]:
         return -1
 
-    stored_flag = False
+    # TODO: erase this condition if cambridge issue is closed
+    # It resets the file read, as the first line break is not displayed
+    if " idiom" in words[word]:
+        f.close()
+        f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
+
+    stored_flag = 0
 
     line = ""
     word_split = word.split(" ")
@@ -114,7 +125,10 @@ def parseFile(word):
         # Searches the start of a possible definition
         if all([x for x in word_split if x in line]) and current_type in line:
             current_word = line.split(current_type, 1)[0]
-            current_pronuntiation = f.readline()
+            if current_type != " collocation" and current_type != " idiom":
+                current_pronuntiation = f.readline()
+            else:
+                current_pronuntiation = "  "
             line = f.readline()
             current_definition = ""
             while len(line) > 1 and (line[0] == ":" or line[0] == "|"):
@@ -127,25 +141,27 @@ def parseFile(word):
                 line = f.readline()
 
             writeFile(
-                f"**{current_word}**", current_type, current_pronuntiation[0:-1], data
+                filename,
+                f"**{current_word}**",
+                current_type,
+                current_pronuntiation[0:-1],
+                data,
             )
-            stored_flag = True
+            stored_flag += 1
 
     f.close()
 
-    if stored_flag:
+    if stored_flag >= len(words[word]):
         return 0
     else:
         return -2
 
 
 def main():
-    global filename, words, no_def
+    global words, no_def
 
     parser = create_parser()
     args = parser.parse_args()
-
-    filename = args.csvfile
 
     not_found = []
     no_def = []
@@ -157,26 +173,28 @@ def main():
     for w in words:
         print(f"{w}...")
         os.system(f"camb -n {w} | ansi2txt > aux.txt")
-        res = parseFile(w)
+        res = parseFile(w, args.csvfile)
         if res == -1:
             not_found.append(w)
         elif res == -2:
             no_def.append(w)
 
-    os.system("rm aux.txt")
+    os.system(f"rm {DEFAULT_PARSE_FILENAME}")
 
-    print("\n")
+    print()
 
     if len(not_found) == 0 and len(no_def) == 0:
-        print("Every word has been given an appropiate meaning")
+        print("✅Every word has been given an appropiate meaning")
     else:
         if len(not_found) != 0:
-            print(f"There have been {len(not_found)} word(s) which could not be found:")
+            print(
+                f"❌There have been {len(not_found)} word(s) which could not be found:"
+            )
             print(not_found)
-            print("\n")
+            print()
         if len(no_def) != 0:
             print(
-                f"There have been {len(no_def)} word(s) whose definitions were found, but none of them have been saved due to filters:"
+                f"🟨There have been {len(no_def)} word(s) whose definitions were found, but some of them have not been saved due to filters:"
             )
             print(no_def)
 

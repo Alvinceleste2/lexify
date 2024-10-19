@@ -11,12 +11,6 @@ HEADER = [
     "A. Clarifier",
     "A. Footnote",
 ]
-WORD_TYPES = [
-    "noun",
-    "verb",
-    "adjective",
-    "adverb",
-]
 
 
 def transform_type(string):
@@ -36,14 +30,14 @@ def transform_type(string):
         return None
 
 
-def initFile(filename):
+def init_file(filename):
     f = open(filename, "w", encoding="UTF8", newline="")
     writer = csv.writer(f)
     writer.writerow(HEADER)
     f.close()
 
 
-def readWords(words_file):
+def read_words(words_file):
     global words
     file = open(words_file, "r")
 
@@ -63,7 +57,7 @@ def readWords(words_file):
     file.close()
 
 
-def createDefStrings(data):
+def create_def_string(data):
     string = ""
     i = 1
     for d in data:
@@ -76,15 +70,15 @@ def createDefStrings(data):
     return string
 
 
-def writeFile(filename, word, word_type, pronuntiation, data):
+def write_file(filename, word, word_type, pronuntiation, data):
     f = open(filename, "a", encoding="UTF8", newline="")
     writer = csv.writer(f)
-    writer.writerow([word, pronuntiation, word_type, createDefStrings(data)])
+    writer.writerow([word, pronuntiation, word_type, create_def_string(data)])
     f.close()
 
 
 # returns 0 on success, -1 if camb did not work properly, -2 if the word could be found but did not match any word types selected
-def parseFile(word, filename):
+def parse_file(word, filename):
     global words
 
     f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
@@ -140,7 +134,7 @@ def parseFile(word, filename):
 
                 line = f.readline()
 
-            writeFile(
+            write_file(
                 filename,
                 f"**{current_word}**",
                 current_type,
@@ -168,14 +162,14 @@ def main():
     not_found = []
     no_def = []
     words = dict()
-    initFile(args.csvfile)
-    readWords(args.wfile)
+    init_file(args.csvfile)
+    read_words(args.wfile)
     print(words)
 
     for w in words:
         print(f"{w}...")
         os.system(f"camb -n {w} | ansi2txt > aux.txt")
-        res = parseFile(w, args.csvfile)
+        res = parse_file(w, args.csvfile)
         if res == -1:
             not_found.append(w)
         elif res == -2:

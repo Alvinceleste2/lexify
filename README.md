@@ -135,6 +135,13 @@ Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 ### Brainscape import
 One imported into `Brainscape`, the cards will have this look:
 
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 <img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" width="200" class="center">
 
 <img src="https://github.com/user-attachments/assets/05ca315c-f784-48cd-9838-724e99ade004" width="200" class="center">

@@ -53,8 +53,88 @@ Additionaly, `Lexify` will inform the user about the words for which any definit
 With all this in mind, the `.csv` file will finally be created and ready for the import. Help and further documentation refering to csv import can be found here: https://brainscape.zendesk.com/hc/en-us/articles/115002369931-How-do-I-import-a-csv-file-correctly
 
 ## Examples
-Example `.txt` file:
+## Example 1
+### Example `.txt` file (words.txt):
 
 ```txt
 cat(n)
-orange(n)
+orange(n)(adj)
+eat(v)
+eat your words(id)
+confess(v)
+do business(col)
+```
+
+### `Lexify` output:
+```bash
+$ python3 lexify
+ _               _  __       
+| |             (_)/ _|      
+| |     _____  ___| |_ _   _ 
+| |    / _ \ \/ / |  _| | | |
+| |___|  __/>  <| | | | |_| |
+\_____/\___/_/\_\_|_|  \__, |
+                        __/ |
+                       |___/ 
+{'cat': [' noun'], 'orange': [' noun', ' adjective'], 'eat': [' verb'], 'eat your words': [' idiom'], 'confess': [' verb'], 'do business': [' collocation']}
+cat...
+orange...
+eat...
+eat your words...
+confess...
+do business...
+
+✅Every word has been given an appropiate meaning
+```
+
+### Output `.csv` file:
+```csv
+Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
+**cat**,uk |kæt| us |kæt|, noun,"**1. a small animal with fur, four legs, a tail, and claws, usually kept as a pet or for catching mice**
+
+**2. any member of the group of animals similar to the cat, such as the lion**
+* *""the cat family""*
+
+"
+**orange**,uk |ˈɒr.ɪndʒ| us |ˈɔːr.ɪndʒ|, noun,"**1. a round sweet fruit that has a thick orange skin and an orange centre divided into many parts [C]**
+* *""a glass of orange juice""*
+
+**2. a colour between red and yellow [C/U]**
+* *""Orange is her favourite colour.""*
+
+"
+**orange**,uk |ˈɒr.ɪndʒ| us |ˈɔːr.ɪndʒ|, adjective,"**1. of a colour between red and yellow**
+* *""The setting sun filled the sky with a deep orange glow.""*
+
+"
+**eat**,uk |iːt| us |iːt| , verb,"**1. to put or take food into the mouth, chew it (= crush it with the teeth), and swallow it**
+* *""Do you eat meat?""*
+* *""When I've got a cold, I don't feel like eating.""*
+* *""We usually eat (= have a meal) at about seven o'clock.""*
+
+"
+**eat your words**, , idiom,"**1. to admit that something you said before was wrong**
+* *""Sam said it would never sell, but when he sees these sales figures he'll have to eat his words.""*
+
+"
+**confess**,uk |kənˈfes| us |kənˈfes|, verb,"**1. to admit that you have done something wrong or something that you feel guilty or bad about**
+* *""[+ that] She confessed to her husband that she had sold her wedding ring.""*
+* *""He confessed to sleeping/having slept through most of the movie.""*
+* *""He has confessed to the murder.""*
+* *""[+ (that)] I have to confess (that) when I first met Reece I didn't think he was very bright.""*
+* *""It was all very confusing, I must confess.""*
+
+"
+**do business with someone/something**, , collocation,"**1. to buy or sell goods or services from or to a person or organization**
+* *""Our firm does a lot of business with overseas customers.""*
+* *""He cautions against doing business with contractors who promise to make repairs but ask to be paid up front.""*
+
+"
+```
+
+### Brainscape import
+One imported into `Brainscape`, the cards will have this look:
+<img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" width="200">
+
+
+

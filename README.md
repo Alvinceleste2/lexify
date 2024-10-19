@@ -206,6 +206,8 @@ Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 
 ### Brainscape import:
 
+Note that only one word has been exported, as definitions for the others could be obtained.
+
 <p align="center">
 <img src="https://github.com/user-attachments/assets/2af26bf5-df1a-4569-aeb7-c156d7b5e9b6" width="350">
 </p>

@@ -66,7 +66,7 @@ do business(col)
 ```
 
 ### `Lexify` output:
-```bash
+```txt
 $ python3 lexify
  _               _  __       
 | |             (_)/ _|      

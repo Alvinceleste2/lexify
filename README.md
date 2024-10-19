@@ -136,21 +136,21 @@ Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 One imported into `Brainscape`, the cards will have this look:
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" class="center">
+<img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" width="300" class="center">
 
-<img src="https://github.com/user-attachments/assets/05ca315c-f784-48cd-9838-724e99ade004" width="200" class="center">
+<img src="https://github.com/user-attachments/assets/05ca315c-f784-48cd-9838-724e99ade004" width="300" class="center">
 
-<img src="https://github.com/user-attachments/assets/1783c4b9-1acf-4ef6-bacb-4c7cf1a5a1d0" width="200" class="center">
+<img src="https://github.com/user-attachments/assets/1783c4b9-1acf-4ef6-bacb-4c7cf1a5a1d0" width="300" class="center">
 
-<img src="https://github.com/user-attachments/assets/c611ca46-6f64-499d-8714-1c99d7fa0fbd" width="200" class="center">
+<img src="https://github.com/user-attachments/assets/c611ca46-6f64-499d-8714-1c99d7fa0fbd" width="300" class="center">
 </p>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/8f16ce21-df9b-454e-ad42-35a5d1ba52af" width="200" class="center">
+<img src="https://github.com/user-attachments/assets/8f16ce21-df9b-454e-ad42-35a5d1ba52af" width="300" class="center">
 
-<img src="https://github.com/user-attachments/assets/5ea69383-88df-4fc8-81a8-6d7581f529a2" width="200" class="center">
+<img src="https://github.com/user-attachments/assets/5ea69383-88df-4fc8-81a8-6d7581f529a2" width="300" class="center">
 
-<img src="https://github.com/user-attachments/assets/e4de8a78-80fe-44ce-9c7d-d416106f0d68" width="200" class="center">
+<img src="https://github.com/user-attachments/assets/e4de8a78-80fe-44ce-9c7d-d416106f0d68" width="300" class="center">
 </p>
 
 

@@ -66,7 +66,7 @@ do business(col)
 ```
 
 ### `Lexify` output:
-```zsh
+```terminal
 $ python3 lexify
  _               _  __       
 | |             (_)/ _|      
@@ -134,6 +134,7 @@ Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 
 ### Brainscape import
 One imported into `Brainscape`, the cards will have this look:
+
 <img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" width="200">
 
 <img src="https://github.com/user-attachments/assets/870e1e7a-fd95-4290-866b-35125da37c5d" width="200">

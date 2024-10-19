@@ -52,6 +52,9 @@ Additionaly, `Lexify` will inform the user about the words for which any definit
 
 With all this in mind, the `.csv` file will finally be created and ready for the import. Help and further documentation refering to csv import can be found here: https://brainscape.zendesk.com/hc/en-us/articles/115002369931-How-do-I-import-a-csv-file-correctly
 
+>[!NOTE]
+> Please be aware that due to `Brainscape` implementation, the import, for the moment, must be made from a mobile device. Otherwise, the `.csv` file will not be readen properly. This could possibly change in the future.
+
 ## Examples
 ## Example 1
 ### Example `.txt` file (words.txt):
@@ -132,31 +135,78 @@ Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 "
 ```
 
-### Brainscape import
+### Brainscape import:
 One imported into `Brainscape`, the cards will have this look:
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" width="350" class="center">
+<img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" width="350">
 
-<img src="https://github.com/user-attachments/assets/05ca315c-f784-48cd-9838-724e99ade004" width="350" class="center">
+<img src="https://github.com/user-attachments/assets/05ca315c-f784-48cd-9838-724e99ade004" width="350">
 </p>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/1783c4b9-1acf-4ef6-bacb-4c7cf1a5a1d0" width="350" class="center">
+<img src="https://github.com/user-attachments/assets/1783c4b9-1acf-4ef6-bacb-4c7cf1a5a1d0" width="350">
 
-<img src="https://github.com/user-attachments/assets/c611ca46-6f64-499d-8714-1c99d7fa0fbd" width="350" class="center">
+<img src="https://github.com/user-attachments/assets/c611ca46-6f64-499d-8714-1c99d7fa0fbd" width="350">
 </p>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/8f16ce21-df9b-454e-ad42-35a5d1ba52af" width="350" class="center">
+<img src="https://github.com/user-attachments/assets/8f16ce21-df9b-454e-ad42-35a5d1ba52af" width="350">
 
-<img src="https://github.com/user-attachments/assets/5ea69383-88df-4fc8-81a8-6d7581f529a2" width="350" class="center">
+<img src="https://github.com/user-attachments/assets/5ea69383-88df-4fc8-81a8-6d7581f529a2" width="350">
 </p>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/e4de8a78-80fe-44ce-9c7d-d416106f0d68" width="350" class="center">
+<img src="https://github.com/user-attachments/assets/e4de8a78-80fe-44ce-9c7d-d416106f0d68" width="350">
 </p>
 
+## Example 2
+### Example `.txt` file (words.txt):
+```txt
+cat(adj)
+orange(n)(v)
+this-word-does-not-exist(n)
+```
 
+### `Lexify` output:
+```terminal
+$ python3 lexify.py
 
+ _               _  __       
+| |             (_)/ _|      
+| |     _____  ___| |_ _   _ 
+| |    / _ \ \/ / |  _| | | |
+| |___|  __/>  <| | | | |_| |
+\_____/\___/_/\_\_|_|  \__, |
+                        __/ |
+                       |___/ 
+{'cat': [' adjective'], 'orange': [' noun', ' verb'], 'this-word-does-not-exist': [' noun']}
+cat...
+orange...
+this-word-does-not-exist...
+
+❌There have been 1 word(s) which could not be found:
+['this-word-does-not-exist']
+
+🟨There have been 2 word(s) whose definitions were found, but some of them have not been saved due to filters:
+['cat', 'orange']
+```
+
+### output `.csv` file:
+```csv
+Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
+**orange**,uk |ˈɒr.ɪndʒ| us |ˈɔːr.ɪndʒ|, noun,"**1. a round sweet fruit that has a thick orange skin and an orange centre divided into many parts [C]**
+* *""a glass of orange juice""*
+
+**2. a colour between red and yellow [C/U]**
+* *""Orange is her favourite colour.""*
+
+"
+```
+
+### Brainscape import:
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/2af26bf5-df1a-4569-aeb7-c156d7b5e9b6" width="350">
+</p>
 

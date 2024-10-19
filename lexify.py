@@ -163,6 +163,8 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
+    print_starter()
+
     not_found = []
     no_def = []
     words = dict()
@@ -197,6 +199,17 @@ def main():
                 f"🟨There have been {len(no_def)} word(s) whose definitions were found, but some of them have not been saved due to filters:"
             )
             print(no_def)
+
+
+def print_starter():
+    print(r" _               _  __       ")
+    print(r"| |             (_)/ _|      ")
+    print(r"| |     _____  ___| |_ _   _ ")
+    print(r"| |    / _ \ \/ / |  _| | | |")
+    print(r"| |___|  __/>  <| | | | |_| |")
+    print(r"\_____/\___/_/\_\_|_|  \__, |")
+    print(r"                        __/ |")
+    print(r"                       |___/ ")
 
 
 def create_parser() -> argparse.ArgumentParser:

@@ -135,15 +135,8 @@ Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 ### Brainscape import
 One imported into `Brainscape`, the cards will have this look:
 
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-
 <p align="center">
-<img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" width="200" class="center">
+<img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" class="center">
 
 <img src="https://github.com/user-attachments/assets/05ca315c-f784-48cd-9838-724e99ade004" width="200" class="center">
 
@@ -158,7 +151,7 @@ One imported into `Brainscape`, the cards will have this look:
 <img src="https://github.com/user-attachments/assets/5ea69383-88df-4fc8-81a8-6d7581f529a2" width="200" class="center">
 
 <img src="https://github.com/user-attachments/assets/e4de8a78-80fe-44ce-9c7d-d416106f0d68" width="200" class="center">
-<\p>
+</p>
 
 
 

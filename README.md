@@ -48,7 +48,7 @@ $ python3 lexify.py [--wfile word_list.txt] [--cfile output_file.csv]
 ```
 By default, Lexify will take a file named `words.txt` for the word list and `cards.csv` for the output filename.
 
-Additionaly, `Lexify` will inform the user about the words for which any definition have been found, in case any exists. Moreover, the system will track those specified word types which have not been stored, so that there is no redundant or useless information inside the `.txt` file. For example, if the `.txt` contains `orange(n)(v)` or `orange(v)`, the script will tell than no definitions were found for orange(v) (as it does not exist such a verb) but the noun one has been stored.
+Additionaly, `Lexify` will inform the user about the words for which any definition have been found, in case any exists. Moreover, the system will track those specified word types which have not been stored, so that there is no redundant or useless information inside the `.txt` file. For example, if the `.txt` contains `orange(n)(v)`, the script will tell that no definitions were found for orange(v) (as it does not exist such a verb) although orange(n) has been found and stored in correctly.
 
 With all this in mind, the `.csv` file will finally be created and ready for the import. Help and further documentation refering to csv import can be found here: https://brainscape.zendesk.com/hc/en-us/articles/115002369931-How-do-I-import-a-csv-file-correctly
 

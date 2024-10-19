@@ -5,17 +5,51 @@
 
 ## Dependencies
 `Lexify` makes use of mhwgoo's cambridge tool to search definitions. You can check how to install it here: https://github.com/mhwgoo/cambridge
-Also, you will need `ansi2txt` for the script to work properly.
+
+>[!IMPORTANT]
+>Also, you will need `ansi2txt` for the script to work properly.
 
 ## How it works
-`Lexify` uses the utility previously mentioned to make searches on the dictionary. It then takes the word, pronuntiation, definitions and examples and places them on a `.csv` file prepared for `Brainscape` importation. To give `Lexify` a list of words, you must create a `.txt`file (inside the same directory than the script) with the words you want to create flashcards for. Once done, you can run the programm with:
+`Lexify` uses the utility previously mentioned to make searches on the dictionary. It then takes the word, pronuntiation, definitions and examples and places them on a `.csv` file prepared for `Brainscape` importation. To give `Lexify` a list of words, you must create a `.txt`file (inside the same directory than the script) with the words and type of words (see examples below) you want to create flashcards for.
+
+To create the words file you first need to know which words you want to save and add them to a `.txt` file separating each one with a linebreak. This could be an example:
+```txt
+orange
+cat
+table
+up
+```
+
+As a single word can have several uses (orange, for example, can be a noun but also an adjective), you will have to specify which type of words you want to save for each of the previous ones. This is done by adding those types you want between parenthesis:
+```txt
+orange(n)
+cat(n)
+table(n)
+up(adv)
+```
+You can see every word type supported in this table:
+
+| Abreviation (.txt file)   | Type of word  |
+| ------------------------- |:-------------:|
+| n                         | noun          |
+| v                         | verb          |
+| adj                       | adjective     |
+| adv                       | adverb        |
+| col                       | collocation   |
+| id                        | idiom         |
+
+Once done, you can run the program with:
 ```bash
 
-python3 lexify word-list.txt output-name.csv
+$ python3 lexify.py [--wfile word_list.txt] [--cfile output_file.csv]
 ```
+By default, Lexify will take a file named `words.txt` for the word list and `cards.csv` for the output filename.
 
 The `.csv` file will be created and ready for the import. Additionaly, `Lexify` will inform the user about the words for which any definition had been found. Help and further documentation refering to csv import can be found here: https://brainscape.zendesk.com/hc/en-us/articles/115002369931-How-do-I-import-a-csv-file-correctly
 
 ## Examples
 Example `.txt` file:
 
+```txt
+cat(n)
+orange(n)

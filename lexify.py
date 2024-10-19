@@ -84,12 +84,16 @@ def parse_file(word, filename):
     f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
     # If len(empty) != 1 means that the answer has not been properly extracted
     # TODO: erase "idiom" condition if cambridge issue is closed
-    if len(line := f.readline()) != 1 and " idiom" not in words[word]:
+    if (
+        len(line := f.readline()) != 1
+        and " idiom" not in words[word]
+        and " collocation" not in words[word]
+    ):
         return -1
 
     # TODO: erase this condition if cambridge issue is closed
     # It resets the file read, as the first line break is not displayed
-    if " idiom" in words[word]:
+    if " idiom" in words[word] or " collocation" in words[word]:
         f.close()
         f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
 
@@ -122,7 +126,7 @@ def parse_file(word, filename):
             if current_type != " collocation" and current_type != " idiom":
                 current_pronuntiation = f.readline()
             else:
-                current_pronuntiation = "  "
+                current_pronuntiation = "‎ "
             line = f.readline()
             current_definition = ""
             while len(line) > 1 and (line[0] == ":" or line[0] == "|"):

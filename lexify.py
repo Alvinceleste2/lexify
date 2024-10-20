@@ -26,6 +26,8 @@ def transform_type(string):
         return " idiom"
     elif string == "col":
         return " collocation"
+    elif string == "ph":
+        return " phrase"
     else:
         return None
 
@@ -88,12 +90,17 @@ def parse_file(word, filename):
         len(line := f.readline()) != 1
         and " idiom" not in words[word]
         and " collocation" not in words[word]
+        and " phrase" not in words[word]
     ):
         return -1
 
     # TODO: erase this condition if cambridge issue is closed
     # It resets the file read, as the first line break is not displayed
-    if " idiom" in words[word] or " collocation" in words[word]:
+    if (
+        " idiom" in words[word]
+        or " collocation" in words[word]
+        or " phrase" in words[word]
+    ):
         f.close()
         f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
 
@@ -123,7 +130,11 @@ def parse_file(word, filename):
         # Searches the start of a possible definition
         if all([x for x in word_split if x in line]) and current_type in line:
             current_word = line.split(current_type, 1)[0]
-            if current_type != " collocation" and current_type != " idiom":
+            if (
+                current_type != " collocation"
+                and current_type != " idiom"
+                and current_type != " phrase"
+            ):
                 current_pronuntiation = f.readline()
             else:
                 current_pronuntiation = "‎ "

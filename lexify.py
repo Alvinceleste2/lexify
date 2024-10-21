@@ -143,7 +143,7 @@ def parse_file(word, filename):
             continue
 
         # Searches the start of a possible definition
-        if all([x for x in word_split if x in line]) and current_type in line:
+        if all(x in line for x in word_split) and current_type in line:
             current_word = line.split(current_type, 1)[0]
             if (
                 current_type != " collocation"

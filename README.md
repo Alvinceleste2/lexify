@@ -53,7 +53,7 @@ Additionaly, `Lexify` will inform the user about the words for which any definit
 With all this in mind, the `.csv` file will finally be created and ready for the import. Help and further documentation refering to csv import can be found here: https://brainscape.zendesk.com/hc/en-us/articles/115002369931-How-do-I-import-a-csv-file-correctly
 
 >[!NOTE]
-> Please be aware that due to `Brainscape` implementation, the import, for the moment, must be made from a mobile device. Otherwise, the `.csv` file will not be readen properly. This could possibly change in the future.
+> Please be aware that due to `Brainscape` implementation, the import, for the moment, must be made from a mobile device. Otherwise, the `.csv` file will not be read properly. This could possibly change in the future.
 
 ## Examples
 ## Example 1
@@ -136,7 +136,7 @@ Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 ```
 
 ### Brainscape import:
-One imported into `Brainscape`, the cards will have this look:
+Once imported into `Brainscape`, the cards will have this look:
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/757abb26-7417-4b2b-b7b5-f87adbaa8300" width="350">
@@ -192,7 +192,7 @@ this-word-does-not-exist...
 ['cat', 'orange']
 ```
 
-### output `.csv` file:
+### Output `.csv` file:
 ```csv
 Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 **orange**,uk |ˈɒr.ɪndʒ| us |ˈɔːr.ɪndʒ|, noun,"**1. a round sweet fruit that has a thick orange skin and an orange centre divided into many parts [C]**
@@ -206,7 +206,7 @@ Q. Body,Q. Clarifier,Q. Footnote,A. Body,A. Clarifier,A. Footnote
 
 ### Brainscape import:
 
-Note that only one word has been exported, as definitions for the others could be obtained.
+Note that only one word has been exported, as definitions for the others could not be obtained.
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/2af26bf5-df1a-4569-aeb7-c156d7b5e9b6" width="350">

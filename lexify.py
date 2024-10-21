@@ -3,6 +3,7 @@ import os
 import argparse
 
 DEFAULT_PARSE_FILENAME = "aux.txt"
+
 HEADER = [
     "Q. Body",
     "Q. Clarifier",
@@ -12,7 +13,6 @@ HEADER = [
     "A. Footnote",
 ]
 
-WORD_TYPE_NUM = 7
 FULL_TYPE_LIST = [
     " idiom",
     " collocation",
@@ -100,24 +100,8 @@ def parse_file(word, filename):
 
     f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
     # If len(empty) != 1 means that the answer has not been properly extracted
-    # TODO: erase "idiom" condition if cambridge issue is closed
-    if (
-        len(line := f.readline()) != 1
-        and " idiom" not in words[word]
-        and " collocation" not in words[word]
-        and " phrase" not in words[word]
-    ):
+    if len(line := f.readline()) != 1:
         return -1
-
-    # TODO: erase this condition if cambridge issue is closed
-    # It resets the file read, as the first line break is not displayed
-    if (
-        " idiom" in words[word]
-        or " collocation" in words[word]
-        or " phrase" in words[word]
-    ):
-        f.close()
-        f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
 
     stored_flag = 0
 
@@ -187,15 +171,14 @@ def parse_file(word, filename):
 
 def main():
     global words, no_def
+    words = dict()
+    not_found, no_def = [], []
 
     parser = create_parser()
     args = parser.parse_args()
 
     print_starter()
 
-    not_found = []
-    no_def = []
-    words = dict()
     init_file(args.csvfile)
     read_words(args.wfile)
     print(words)
@@ -210,7 +193,10 @@ def main():
             no_def.append(w)
 
     os.system(f"rm {DEFAULT_PARSE_FILENAME}")
+    print_summary(not_found, no_def)
 
+
+def print_summary(not_found, no_def):
     print()
 
     if len(not_found) == 0 and len(no_def) == 0:

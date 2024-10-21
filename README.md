@@ -41,6 +41,9 @@ You can see every word type supported in this table:
 >[!TIP]
 >If you want to save several word type definitions for a single word, you can concatenate them this way: `word(a)(b)`, where a and b are element from the list above. Example: `orange(n)(adj)` will store orange definitions as a noun but also as an adjective.
 
+>[!NOTE]
+> As well, if you want to store every possible definition without caring about the word type, you can simply leave it empty.
+
 Once the `.txt` file is created properly, you can run the program with:
 ```bash
 

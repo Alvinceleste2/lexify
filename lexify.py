@@ -12,6 +12,17 @@ HEADER = [
     "A. Footnote",
 ]
 
+WORD_TYPE_NUM = 7
+FULL_TYPE_LIST = [
+    " idiom",
+    " collocation",
+    " phrase",
+    " verb",
+    " noun",
+    " adjective",
+    " adverb",
+]
+
 
 def transform_type(string):
     if string == "n":
@@ -21,7 +32,7 @@ def transform_type(string):
     elif string == "adj":
         return " adjective"
     elif string == "adv":
-        return " adv"
+        return " adverb"
     elif string == "id":
         return " idiom"
     elif string == "col":
@@ -55,6 +66,10 @@ def read_words(words_file):
             tt = transform_type(word_type)
             if tt is not None:
                 types.append(tt)
+
+        if len(types) == 0:
+            types = FULL_TYPE_LIST
+
         words[d] = types
     file.close()
 
@@ -160,7 +175,7 @@ def parse_file(word, filename):
 
     f.close()
 
-    if stored_flag >= len(words[word]):
+    if stored_flag >= len(words[word]) or words[word] == FULL_TYPE_LIST:
         return 0
     else:
         return -2
@@ -183,7 +198,7 @@ def main():
 
     for w in words:
         print(f"{w}...")
-        os.system(f"camb -n {w} | ansi2txt > aux.txt")
+        os.system(f"camb -n {w} | ansi2txt > {DEFAULT_PARSE_FILENAME}")
         res = parse_file(w, args.csvfile)
         if res == -1:
             not_found.append(w)

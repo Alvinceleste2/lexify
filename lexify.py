@@ -112,6 +112,9 @@ def parse_file(word, filename):
     # Searches word entries until EOF
     # It must be a definition for the possible word types specified in the dictionary
     while len(line := f.readline()) != 0:
+        if line[0] == " ":
+            continue
+
         # Definition -> list of examples dictionary
         data = dict()
         current_pronuntiation = ""

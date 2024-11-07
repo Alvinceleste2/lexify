@@ -123,8 +123,15 @@ def parse_file(word, filename):
 
         for t in words[word]:
             if t in line:
-                current_type = t
-                break
+
+                fi = line.find(t)
+
+                if (
+                    all(e not in line[0:fi] for e in FULL_TYPE_LIST)
+                    and word in line[0:fi]
+                ):
+                    current_type = t
+                    break
 
         if current_type == "":
             continue

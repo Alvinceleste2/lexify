@@ -3,6 +3,7 @@ import os
 import argparse
 
 import classic as cl
+import families as fm
 
 HEADER = [
     "Q. Body",
@@ -29,7 +30,11 @@ def main():
     print_starter()
 
     if args.mode == 0:
+        print("CLASSIC MODE SELECTED")
         cl.classic_flow(args)
+    elif args.mode == 1:
+        print("FAMILIES MODE SELECTED")
+        fm.families_flow(args)
 
 
 def print_starter():
@@ -67,7 +72,7 @@ def create_parser() -> argparse.ArgumentParser:
         "--mode",
         dest="mode",
         type=int,
-        help="Select Lexify's mode: 0 for classic (default), 1 for word formation",
+        help="Select Lexify's mode: 0 for classic, definitions flashcards creator (default), 1 for word families mode",
         default=0,
     )
 

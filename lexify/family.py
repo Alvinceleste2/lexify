@@ -32,13 +32,7 @@ def read_words(words_file):
     file.close()
 
 
-def parse_file(word, filename):
-    nlp = spacy.load("en_core_web_sm")
-    word = "dog"
-
-    doc = nlp(word)
-
-    print(doc[0].pos_)
+# def parse_file(word, filename):
 
 
 def print_summary():

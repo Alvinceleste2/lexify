@@ -3,3 +3,5 @@
 __pycache__
 !families.txt
 .venv
+!families_vanilla.txt
+!families_db.txt

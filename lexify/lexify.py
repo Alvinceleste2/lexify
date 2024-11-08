@@ -3,7 +3,7 @@ import os
 import argparse
 
 import classic as cl
-import families as fm
+import family as fm
 
 HEADER = [
     "Q. Body",
@@ -34,7 +34,7 @@ def main():
         cl.classic_flow(args)
     elif args.mode == 1:
         print("FAMILIES MODE SELECTED")
-        fm.families_flow(args)
+        fm.family_flow(args)
 
 
 def print_starter():

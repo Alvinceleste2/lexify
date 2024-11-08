@@ -1,8 +1,21 @@
 import os
+import spacy
+from collections import defaultdict
 
 FAMILIES_TXT_DATABASE = "families.txt"
 
 DEFAULT_PARSE_FILENAME = "aux.txt"
+DEFAULT_WORD_TYPE_FILENAME = "type.txt"
+
+FULL_TYPE_LIST = [
+    " idiom",
+    " collocation",
+    " phrase",
+    " verb",
+    " noun",
+    " adjective",
+    " adverb",
+]
 
 
 def read_words(words_file):
@@ -19,18 +32,32 @@ def read_words(words_file):
     file.close()
 
 
-def parse_file(filename):
-    print("TODO")
+def parse_file(word, filename):
+    nlp = spacy.load("en_core_web_sm")
+    word = "dog"
+
+    doc = nlp(word)
+
+    print(doc[0].pos_)
 
 
 def print_summary():
-    print("TODO")
+    global no_res
+    print()
+
+    if len(no_res) == 0:
+        print("✅Every word has been given a family")
+    else:
+        print(
+            f"🟨There have been {len(no_res)} word(s) whose families could not be found"
+        )
+        print(no_res)
 
 
 def family_flow(args):
     global words, no_res
-
-    words, no_res = [], []
+    words = []
+    no_res = []
 
     read_words(args.wfile)
     print(words)
@@ -46,4 +73,5 @@ def family_flow(args):
             no_res.append(w)
 
     os.system(f"rm {DEFAULT_PARSE_FILENAME}")
-    print_summary(no_res)
+    os.system(f"rm {DEFAULT_WORD_TYPE_FILENAME}")
+    print_summary()

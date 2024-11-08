@@ -83,7 +83,7 @@ def parse_file(word, filename):
 
     f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
     # If len(empty) != 1 means that the answer has not been properly extracted
-    if len(line := f.readline()) != 1:
+    if len(line := f.readline()) < 2:
         return -1
 
     stored_flag = 0

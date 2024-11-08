@@ -32,7 +32,8 @@ for d in data_into_list:
     if d[0] == "\t":
         u = d[1 : len(d) + 1]
     else:
-        u = d
+        wfile.write(f"{d}\n")
+        continue
 
     url_page = f"https://wordtype.org/of/{u}"
     encoded_url = urllib.parse.quote(url_page, safe=":/")
@@ -65,7 +66,7 @@ for d in data_into_list:
     for e in types:
         line += "(" + e + ")"
 
-    wfile.write(f"{d} {line}\n")
+    wfile.write(f"{d}{line}\n")
 
 file.close()
 wfile.close()

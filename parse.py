@@ -1,5 +1,6 @@
 import urllib.request
 import urllib.parse
+import urllib.error as err
 from bs4 import BeautifulSoup
 
 FULL_TYPE_LIST = [
@@ -42,9 +43,19 @@ for d in data_into_list:
         "User-Agent": "Mozilla/5.0",
     }
     req = urllib.request.Request(encoded_url, None, headers)
-    f = urllib.request.urlopen(req)
+
+    try:
+        f = urllib.request.urlopen(req)
+    except err.HTTPError as e:
+        print(e.reason)
+        wfile.write(f"{d}()\n")
+        continue
+    except err.URLError as e:
+        print(e.reason)
+        wfile.write(f"{d}()\n")
+        continue
+
     page = f.read().decode("utf-8")
-    # print(page)
 
     soup = BeautifulSoup(page, "html.parser")
 

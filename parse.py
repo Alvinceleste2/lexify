@@ -1,3 +1,4 @@
+import sys
 import urllib.request
 import urllib.parse
 import urllib.error as err
@@ -25,9 +26,17 @@ data = file.read()
 data_into_list = data.split("\n")
 data_into_list.pop(-1)
 
-wfile = open("sources/families_db.txt", "w")
+wfile = open("sources/families_db.txt", "w" if len(sys.argv) < 2 else "a")
+
+reached = len(sys.argv) <= 1
 
 for d in data_into_list:
+    if not reached:
+        if d != f"{sys.argv[1]}":
+            continue
+        else:
+            reached = True
+
     u = ""
     print(d)
     if d[0] == "\t":

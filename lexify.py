@@ -35,6 +35,9 @@ def main():
     elif args.mode == 1:
         print("FAMILIES MODE SELECTED")
         fm.family_flow(args)
+    else:
+        print("NO VALID MODE SELECTED")
+        return
 
 
 def print_starter():

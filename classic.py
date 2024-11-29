@@ -83,7 +83,7 @@ def parse_file(word, filename):
 
     f = open(DEFAULT_PARSE_FILENAME, "r", newline="")
     # If len(empty) != 1 means that the answer has not been properly extracted
-    if len(line := f.readline()) < 2:
+    if len(line := f.readline()) > 2:
         return -1
 
     stored_flag = 0
@@ -106,13 +106,9 @@ def parse_file(word, filename):
 
         for t in words[word]:
             if t in line:
-
                 fi = line.find(t)
 
-                if (
-                    all(e not in line[0:fi] for e in FULL_TYPE_LIST)
-                    and word in line[0:fi]
-                ):
+                if all(e not in line[0:fi] for e in FULL_TYPE_LIST):
                     current_type = t
                     break
 
@@ -166,17 +162,17 @@ def print_summary(not_found, no_def):
     print()
 
     if len(not_found) == 0 and len(no_def) == 0:
-        print("✅Every word has been given an appropiate meaning")
+        print("✅ Every word has been given an appropiate meaning")
     else:
         if len(not_found) != 0:
             print(
-                f"❌There have been {len(not_found)} word(s) which could not be found:"
+                f"❌ There have been {len(not_found)} word(s) which could not be found:"
             )
             print(not_found)
             print()
         if len(no_def) != 0:
             print(
-                f"🟨There have been {len(no_def)} word(s) whose definitions were found, but some of them have not been saved due to filters:"
+                f"🟨 There have been {len(no_def)} word(s) whose definitions were found, but some of them have not been saved due to filters:"
             )
             print(no_def)
 
@@ -191,12 +187,21 @@ def classic_flow(args):
 
     for w in words:
         print(f"{w}...")
-        os.system(f"camb -n {w} | ansi2txt > {DEFAULT_PARSE_FILENAME}")
-        res = parse_file(w, args.csvfile)
-        if res == -1:
-            not_found.append(w)
-        elif res == -2:
-            no_def.append(w)
+        for tries in range(2, -1, -1):
+            print(f"Attempt number {abs(3 - tries)}")
+            os.system(f"camb -n -f {w} | ansi2txt > {DEFAULT_PARSE_FILENAME}")
+            res = parse_file(w, args.csvfile)
+            if res == -1:
+                if tries == 0:
+                    not_found.append(w)
+                    break
+                else:
+                    continue
+            elif res == -2:
+                no_def.append(w)
+                break
+            else:
+                break
 
     os.system(f"rm {DEFAULT_PARSE_FILENAME}")
     print_summary(not_found, no_def)

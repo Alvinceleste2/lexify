@@ -5,19 +5,19 @@ import urllib.error as err
 from bs4 import BeautifulSoup
 
 FULL_TYPE_LIST = [
-    "idiom",
-    "collocation",
-    "phrase",
-    "verb",
-    "noun",
-    "adjective",
-    "adverb",
-    "determiner",
-    "interjection",
-    "symbol",
-    "pronoun",
-    "preposition",
-    "abbreviation",
+    " idiom",
+    " collocation",
+    " phrase",
+    " verb",
+    " noun",
+    " adjective",
+    " adverb",
+    " determiner",
+    " interjection",
+    " symbol",
+    " pronoun",
+    " preposition",
+    " abbreviation",
 ]
 
 file = open("sources/families_vanilla.txt", "r")

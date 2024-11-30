@@ -127,7 +127,7 @@ def parse_file(word, filename):
 
             line = f.readline()
 
-            if "uk" in line or "us" in line or "|" in line:
+            if "uk " in line or " us " in line or "|" in line:
                 current_pronuntiation = line
                 line = f.readline()
             else:

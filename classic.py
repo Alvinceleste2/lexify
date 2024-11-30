@@ -194,7 +194,7 @@ def classic_flow(args):
             try:
                 # Run the command
                 subprocess.run(
-                    f"camb -n -f {w} | ansi2txt > {DEFAULT_PARSE_FILENAME}",
+                    f"camb -n {w} | ansi2txt > {DEFAULT_PARSE_FILENAME}",
                     shell=True,
                     check=True,
                 )

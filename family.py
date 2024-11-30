@@ -1,5 +1,7 @@
 import os
 import csv
+import subprocess
+import time
 from collections import defaultdict
 
 FAMILIES_TXT_DATABASE = "sources/families_db.txt"
@@ -113,12 +115,13 @@ def parse_file(word, filename):
         for tt in data.keys():
             pron = ""
 
-            for tries in range(2, -1, -1):
+            for tries in range(3, -1, -1):
                 pron = get_pronuntiation(word)
                 if pron == -1:
                     if tries == 0:
                         return -2
                     else:
+                        time.sleep(0.05)
                         continue
                 else:
                     break
@@ -164,9 +167,17 @@ def family_flow(args):
 
     for w in words:
         print(f"{w}...")
-        os.system(
-            f"pcregrep -M '(?s)(^{w}\n\t{w}.*?)(?=^(?!\t))' sources/families_db.txt > {DEFAULT_PARSE_FILENAME}"
-        )
+        try:
+            # Run the command
+            subprocess.run(
+                f"pcregrep -M '(?s)(^{w}\n\t{w}.*?)(?=^(?!\t))' sources/families_db.txt > {DEFAULT_PARSE_FILENAME}",
+                shell=True,
+                check=True,
+            )
+        except KeyboardInterrupt:
+            print("Process interrupted by user (Ctrl+C)")
+            exit(-1)
+
         res = parse_file(w, args.csvfile)
 
         if res == -1:

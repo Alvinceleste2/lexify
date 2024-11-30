@@ -1,5 +1,7 @@
 import csv
 import os
+import subprocess
+import time
 
 DEFAULT_PARSE_FILENAME = "aux.txt"
 
@@ -122,15 +124,15 @@ def parse_file(word, filename):
             and line[0] != " "
         ):
             current_word = line.split(current_type, 1)[0]
-            if (
-                current_type != " collocation"
-                and current_type != " idiom"
-                and current_type != " phrase"
-            ):
-                current_pronuntiation = f.readline()
+
+            line = f.readline()
+
+            if "uk" in line or "us" in line or "|" in line:
+                current_pronuntiation = line
+                line = f.readline()
             else:
                 current_pronuntiation = "‎ "
-            line = f.readline()
+
             current_definition = ""
             while len(line) > 1 and (line[0] == ":" or line[0] == "|"):
                 if line[0] == ":":
@@ -187,15 +189,26 @@ def classic_flow(args):
 
     for w in words:
         print(f"{w}...")
-        for tries in range(2, -1, -1):
-            print(f"Attempt number {abs(3 - tries)}")
-            os.system(f"camb -n -f {w} | ansi2txt > {DEFAULT_PARSE_FILENAME}")
+        for tries in range(4, -1, -1):
+            print(f"Attempt number {abs(5 - tries)}")
+            try:
+                # Run the command
+                subprocess.run(
+                    f"camb -n -f {w} | ansi2txt > {DEFAULT_PARSE_FILENAME}",
+                    shell=True,
+                    check=True,
+                )
+            except KeyboardInterrupt:
+                print("Process interrupted by user (Ctrl+C)")
+                exit(-1)
+
             res = parse_file(w, args.csvfile)
             if res == -1:
                 if tries == 0:
                     not_found.append(w)
                     break
                 else:
+                    time.sleep(0.05)
                     continue
             elif res == -2:
                 no_def.append(w)

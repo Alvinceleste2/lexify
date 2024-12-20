@@ -87,7 +87,7 @@ for d in data_into_list:
         line += "()"
     else:
         for e in types:
-            line += "(" + e + ")"
+            line += "(" + e[1:] + ")"
 
     wfile.write(f"{d}{line}\n")
 

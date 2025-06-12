@@ -32,7 +32,6 @@ def print_init():
 
 def ask_args():
     """Asks the user (interactively) which arguments to use."""
-
     # Creates the args dictionary.
     args = dict()
 
@@ -78,7 +77,6 @@ def init_file(filename):
     Args:
         filename (string): Output file name.
     """
-
     # Creates a new file with the specified name.
     f = open(filename, "w", encoding="UTF8", newline="")
 
@@ -91,7 +89,6 @@ def init_file(filename):
 
 def main():
     """Main funtion to initialise lexify tool."""
-
     # Prints initial screen.
     print_init()
 

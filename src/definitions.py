@@ -3,6 +3,7 @@ import os
 import subprocess
 import time
 
+
 # Default name for auxiliary parse file.
 DEFAULT_PARSE_FILENAME = "aux.txt"
 
@@ -16,6 +17,10 @@ FULL_TYPE_LIST = [
     " adjective",
     " adverb",
 ]
+
+
+class InputFileParsingError(Exception):
+    pass
 
 
 def abbtotype(abbreviation):
@@ -44,7 +49,7 @@ def abbtotype(abbreviation):
             return " phrase"
         case _:
             # If word type abbreviation is not known, raises an exception.
-            raise KeyError()
+            raise InputFileParsingError(f'Word type "{abbreviation}" is not known.')
 
 
 def is_balanced(string):
@@ -55,7 +60,7 @@ def is_balanced(string):
         string (string): String whose parenthesis are checked.
     """
     stack = 0
-    # Used when first parenthesis is encountered, so no words can be between outside two well-closed parenthesis.
+    # Used when first parenthesis is encountered, so no words can be between two well-closed parenthesis.
     first_parens = False
 
     for s in string:
@@ -66,16 +71,14 @@ def is_balanced(string):
             stack -= 1
 
             if stack < 0:
-                return False
+                raise InputFileParsingError("Parenthesis are not balanced.")
 
         # Checks that there are no words between well-closed parenthesis.
         elif stack <= 0 and first_parens == True:
-            return False
+            raise InputFileParsingError("No words or letters can be between two well-closed parenthesis.")
 
     if stack != 0:
-        return False
-
-    return True
+        raise InputFileParsingError("Parenthesis are not balanced.")
 
 
 def check_input_line(line):
@@ -93,21 +96,22 @@ def check_input_line(line):
 
     # Checks that line is not empty
     if len(line) == 0:
-        raise ValueError()
+        raise InputFileParsingError("Empty lines are not allowed.")
 
     # Checks that line parenthesis are balanced.
-    if not is_balanced(line):
-        raise ValueError()
+    is_balanced(line)
 
     # Checks that a word exists before the first parenthesis occurrence.
     if line[0] == "(":
-        raise ValueError()
+        raise InputFileParsingError("A dictionary item must be specified before the first parenthesis.")
 
     # Retrieves the actual word.
-    if (index := s.find("(")) != -1:
-        word == line[0 : index - 1]
+    if (index := line.find("(")) != -1:
+        word = line[0 : index - 1]
     else:
         word = line
+
+    return word
 
 
 def read_words(input):
@@ -123,40 +127,42 @@ def read_words(input):
     raw_data = file.read()
 
     # Puts all data into a list, separated by linebreaks.
-    data_list = raw_data.split("\n")
-    data_list.pop(-1)
+    lines = raw_data.split("\n")
+    lines.pop(-1)
 
-    for d in data_list:
+    print(lines)
+
+    for line in lines:
         # Initialises a list of word types for each word.
         types = []
+        aux_line = line
 
-        if not balanced_parens():
-            pass
+        # Makes all checks about the input line.
+        try:
+            current_word = check_input_line(line)
+        except InputFileParsingError as e:
+            raise InputFileParsingError(f"Error in line #{lines.index(line) + 1} of input file -> {str(e)}")
 
+        # Retrieves desired word types.
         # Continues till there are no more parenthesis left.
-        while "(" in d and ")" in d:
-            word_type_abb = d[d.index("(") + 1 : d.index(")")]
+        while "(" in aux_line and ")" in aux_line:
+            word_type_abb = aux_line[aux_line.index("(") + 1 : aux_line.index(")")]
 
             # Erases the current word type from the input file.
-            d = d.replace(f"({word_type_abb})", "")
+            aux_line = aux_line.replace(f"({word_type_abb})", "")
 
             # If word type abbreviation is not known, exits the program.
             try:
                 tt = abbtotype(word_type_abb)
-            except:
-                print(
-                    f'❌ There was an error while parsing the input file: word type "{word_type_abb}" for word "{d}" is not know.'
-                )
-
-            if tt is not None:
-                types.append(tt)
+            except InputFileParsingError as e:
+                raise InputFileParsingError(f"Error in line #{lines.index(line) + 1} of input file -> {str(e)}")
 
             # If no word type is specified, all word types are introduced.
             if len(types) == 0:
                 types = FULL_TYPE_LIST
 
             # Saves specified word types into the dictionary.
-            words[d] = types
+            words[current_word] = types
 
     file.close()
 
@@ -167,5 +173,9 @@ def definitions_flow(args):
     words = dict()
     not_found, no_def = [], []
 
-    read_words(args["input"])
-    print(words)
+    try:
+        read_words(args["input"])
+    except InputFileParsingError as e:
+        print(f"❌ There was an error while parsing the input file -> {str(e)}")
+
+    print("✅ Input has been correctly parsed.")

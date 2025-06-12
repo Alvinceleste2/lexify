@@ -3,6 +3,8 @@ import os
 
 from pathlib import Path
 
+from definitions import definitions_flow
+
 # Output file (.csv) headers.
 HEADER = [
     "Q. Body",
@@ -36,7 +38,7 @@ def ask_args():
     args = dict()
 
     # Asks for input file name.
-    print(f'⚡ Input file name (leave blank for default "{DEFAULT_INPUT_FILENAME}"):', end=" ")
+    print(f'⚡ INPUT FILE NAME (leave blank for default "{DEFAULT_INPUT_FILENAME}"):', end=" ")
     if (input_filename := input()) == "":
         input_filename = DEFAULT_INPUT_FILENAME
 
@@ -48,14 +50,14 @@ def ask_args():
 
     # Asks for output file name.
     print(
-        f'⚡ Output file name (⚠️ Existing files with the same name will be overwritten ⚠️) (leave blank for default "{DEFAULT_OUTPUT_FILENAME}"):',
+        f'⚡ OUTPUT FILE NAME (⚠️ Existing files with the same name will be overwritten ⚠️) (leave blank for default "{DEFAULT_OUTPUT_FILENAME}"):',
         end=" ",
     )
     if (output_filename := input()) == "":
         output_filename = DEFAULT_OUTPUT_FILENAME
 
     # Asks for lexify's execution mode.
-    print(f'❓ Execution mode [0 for definitions, 1 for families] (leave blank for default "{DEFAULT_MODE}"):', end=" ")
+    print(f'❓ EXECUTION MODE [0 for definitions, 1 for families] (leave blank for default "{DEFAULT_MODE}"):', end=" ")
     if (mode := input()) == "":
         mode = DEFAULT_MODE
 
@@ -98,15 +100,22 @@ def main():
     except:
         return
 
+    init_file(args["output"])
+
+    print()
+
     # Runs the appropriate methods depending on the selected mode.
     if args["mode"] == "0":
-        print("DEFINITIONS MODE SELECTED")
-        # TODO  call definitions mode methods
+        print(f'📚 DEFINITIONS MODE SELECTED 📚 -> in : "{args["input"]}" | out : "{args["output"]}"')
+        definitions_flow(args)
+
     elif args["mode"] == "1":
-        print("FAMILIES MODE SELECTED")
+        print(f'🪢 FAMILIES MODE SELECTED 🪢 -> in : "{args["input"]}" | out : "{args["output"]}"')
         # TODO  call families mode methods
     else:
         print("NO VALID MODE SELECTED")
+
+    print()
 
 
 if __name__ == "__main__":

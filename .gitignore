@@ -5,3 +5,4 @@ __pycache__
 .venv
 !families_vanilla.txt
 !families_db.txt
+.pytest_cache

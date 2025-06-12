@@ -13,6 +13,13 @@ dependencies = [
 [tool.poetry.scripts]
 lexify = "lexify:main"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.0"
+
+[tool.pytest.ini_options]
+addopts = "-ra --tb=short"
+testpaths = ["tests"]
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

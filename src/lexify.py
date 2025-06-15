@@ -3,7 +3,7 @@ import os
 
 from pathlib import Path
 
-from definitions import definitions_flow
+from definitions.definitions import definitions_flow
 
 # Output file (.csv) headers.
 HEADER = [
@@ -92,12 +92,14 @@ def init_file(filename):
 def main():
     """Main funtion to initialise lexify tool."""
     # Prints initial screen.
-    print_init()
+    # print_init()
+
+    print()
 
     # Asks the user for execution arguments.
     try:
         args = ask_args()
-    except:
+    except KeyboardInterrupt:
         return
 
     init_file(args["output"])

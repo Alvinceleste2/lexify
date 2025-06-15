@@ -1,12 +1,3 @@
-import csv
-import os
-import subprocess
-import time
-
-
-# Default name for auxiliary parse file.
-DEFAULT_PARSE_FILENAME = "aux.txt"
-
 # Full list of possible word types.
 FULL_TYPE_LIST = [
     " idiom",
@@ -20,6 +11,8 @@ FULL_TYPE_LIST = [
 
 
 class InputFileParsingError(Exception):
+    """Exception that represents an error while trying to parse input file."""
+
     pass
 
 
@@ -119,8 +112,13 @@ def read_words(input):
 
     Args:
         input (string): Input file name.
+
+    Return:
+        words (dict): Dictionary containing parsed words.
     """
-    global words
+
+    # Initialises the dictionary.
+    words = {}
 
     # Opens the input file and starts reading it.
     file = open(input, "r")
@@ -166,16 +164,4 @@ def read_words(input):
 
     file.close()
 
-
-def definitions_flow(args):
-    global words, no_def
-
-    words = dict()
-    not_found, no_def = [], []
-
-    try:
-        read_words(args["input"])
-    except InputFileParsingError as e:
-        print(f"❌ There was an error while parsing the input file -> {str(e)}")
-
-    print("✅ Input has been correctly parsed.")
+    return words

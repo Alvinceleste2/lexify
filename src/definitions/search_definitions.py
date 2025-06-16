@@ -2,6 +2,7 @@ import os
 import csv
 import time
 import subprocess
+from collections import defaultdict
 
 from .common import FULL_TYPE_LIST
 
@@ -111,7 +112,8 @@ def parse_camb_file(filename, words, word):
         word (string): Word whose definitions are being searched.
 
     Returns:
-        True on success, False if some word definitions were not stored due to filters.
+        List of word types that are not compatible with the specified word.
+        If this list is empty, that means that all specified word types were stored.
     """
 
     # Opens the camb output file in read mode and "removes" the first line of it.
@@ -122,6 +124,9 @@ def parse_camb_file(filename, words, word):
     word_split = word.split(" ")
     word_split.pop(-1)
 
+    # Initialises a dictionary that keeps track of the number of definitions that have been stored for each word type.
+    stored_dict = defaultdict(int)
+
     # Searches the word entries until EOF.
     while (len(line := f.readline())) != 0:
         # If line starts with a space no definition is there.
@@ -131,8 +136,11 @@ def parse_camb_file(filename, words, word):
         # If a definition is found, creates a dictionary where to store all examples and other things.
         data = dict()
 
-        # Initialises a flag that raises when a definition has been stored.
-        stored_flag = 0
+        # Some various initializations.
+        current_type = ""
+        current_word = ""
+        current_definition = ""
+        current_pronuntiation = ""
 
         # For each type of word requested, finds out if the current definition matches that type of word.
         for t in words[word]:
@@ -185,15 +193,22 @@ def parse_camb_file(filename, words, word):
             write_definition(filename, f"**{current_word}**", current_type, current_pronuntiation[0:-1], data)
 
             # Adds one to the stored_flag.
-            stored_flag += 1
+            stored_dict[current_type] += 1
 
-        f.close()
+    f.close()
 
-        # Checks if all word types have been stored or not.
-        if stored_flag >= len(words[word]) or words[word] == FULL_TYPE_LIST:
-            return True
-        else:
-            return False
+    no_def = []
+
+    # Checks that definitions for all word types have been stored. If not, then the specified type of word for this current word does not exist.
+
+    if words[word] == FULL_TYPE_LIST:
+        return []
+
+    for wt in words[word]:
+        if stored_dict[wt] == 0:
+            no_def.append(wt)
+
+    return no_def
 
 
 def search_definitions(filename, words):
@@ -218,8 +233,11 @@ def search_definitions(filename, words):
         # If camb output is ok, the program continues.
         else:
             # Now, camb parsing function can return True if all definitions were stored, or False if some of them were not stored due to filters.
-            if not parse_camb_file(filename, words, w):
-                no_def.append(w)
+            ret_list = parse_camb_file(filename, words, w)
+            if len(ret_list) != 0:
+                d = dict()
+                d[w] = ret_list
+                no_def.append(d)
                 continue
 
     # Removes the aux file from system.

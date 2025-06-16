@@ -24,12 +24,12 @@ def print_summary(not_found, no_def):
         print("✅ Every word has been given an appropiate meaning")
     else:
         if len(not_found) != 0:
-            print(f"❌ There have been {len(not_found)} word(s) which could not be found:")
+            print(f"❌ ERROR! There have been {len(not_found)} word(s) which could not be found:")
             print(not_found)
             print()
         if len(no_def) != 0:
             print(
-                f"🟨 There have been {len(no_def)} word(s) whose definitions were found, but some of them have not been saved due to filters:"
+                f"🟨 WARNING! There have been {len(no_def)} word(s) whose specified target word types do not exist. Please, review the input file. Here is the full list:"
             )
             print(no_def)
 

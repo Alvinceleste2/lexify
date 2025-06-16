@@ -1,13 +1,4 @@
-# Full list of possible word types.
-FULL_TYPE_LIST = [
-    " idiom",
-    " collocation",
-    " phrase",
-    " verb",
-    " noun",
-    " adjective",
-    " adverb",
-]
+from .common import FULL_TYPE_LIST
 
 
 class InputFileParsingError(Exception):
@@ -148,6 +139,12 @@ def read_words(input):
 
             # Erases the current word type from the input file.
             aux_line = aux_line.replace(f"({word_type_abb})", "")
+
+            # Checks that the word type selected is not duplicated.
+            if "(" + word_type_abb + ")" in aux_line:
+                raise InputFileParsingError(
+                    f'Error in line #{lines.index(line) + 1} of input file -> The word type "{word_type_abb}" is duplicated.'
+                )
 
             # If word type abbreviation is not known, exits the program.
             try:

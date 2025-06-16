@@ -16,7 +16,7 @@ HEADER = [
 ]
 
 DEFAULT_INPUT_FILENAME = "input.txt"
-DEFAULT_OUTPUT_FILENAME = "output.txt"
+DEFAULT_OUTPUT_FILENAME = "output.csv"
 DEFAULT_MODE = "0"
 
 

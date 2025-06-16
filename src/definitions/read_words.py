@@ -1,5 +1,12 @@
 from .common import FULL_TYPE_LIST
 
+# Ignores TqdmExperimentalWarning
+import warnings
+from tqdm import TqdmExperimentalWarning
+from tqdm.rich import tqdm
+
+warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
+
 
 class InputFileParsingError(Exception):
     """Exception that represents an error while trying to parse input file."""
@@ -91,7 +98,7 @@ def check_input_line(line):
 
     # Retrieves the actual word.
     if (index := line.find("(")) != -1:
-        word = line[0 : index - 1]
+        word = line[0:index]
     else:
         word = line
 
@@ -119,9 +126,9 @@ def read_words(input):
     lines = raw_data.split("\n")
     lines.pop(-1)
 
-    print(lines)
+    print()
 
-    for line in lines:
+    for line in tqdm(lines, desc="🐙 Parsing input file..."):
         # Initialises a list of word types for each word.
         types = []
         aux_line = line
@@ -152,12 +159,14 @@ def read_words(input):
             except InputFileParsingError as e:
                 raise InputFileParsingError(f"Error in line #{lines.index(line) + 1} of input file -> {str(e)}")
 
-            # If no word type is specified, all word types are introduced.
-            if len(types) == 0:
-                types = FULL_TYPE_LIST
+            types.append(tt)
 
-            # Saves specified word types into the dictionary.
-            words[current_word] = types
+        # If no word type is specified, all word types are introduced.
+        if len(types) == 0:
+            types = FULL_TYPE_LIST
+
+        # Saves specified word types into the dictionary.
+        words[current_word] = types
 
     file.close()
 

@@ -104,6 +104,28 @@ def write_definition(filename, word, word_type, pronuntiation, data):
     f.close()
 
 
+def line_jump(file_ptr):
+    """Jumps a line inside a file. If the first character of the line is the space character, jumps again till this condition is not satisfied.
+
+    Args:
+        file_ptr (file): File pointer to an opened file.
+
+    Returns:
+        Returns the appropriate read line following the guidemarks above.
+    """
+    # Reads a line from file.
+    line = file_ptr.readline()
+
+    # If len(line) == 0, EOF has been reached and returns that same line.
+    if len(line) == 0:
+        return line
+    # If the first character of the line is an space, skips that line.
+    elif line[0] == " ":
+        return line_jump(file_ptr)
+    else:
+        return line
+
+
 def parse_camb_file(filename, words, word):
     """Parses the camb tool output file for a word to find definitions, examples, etc.
 
@@ -118,7 +140,7 @@ def parse_camb_file(filename, words, word):
 
     # Opens the camb output file in read mode and "removes" the first line of it.
     f = open(AUX_FILENAME, "r", newline="")
-    line = f.readline()
+    line = line_jump(f)
 
     # In case the word is a phrase, splits the phrase in all its subwords.
     word_split = word.split(" ")
@@ -128,7 +150,7 @@ def parse_camb_file(filename, words, word):
     stored_dict = defaultdict(int)
 
     # Searches the word entries until EOF.
-    while (len(line := f.readline())) != 0:
+    while (len(line := line_jump(f))) != 0:
         # If line starts with a space no definition is there.
         if line[0] == " ":
             continue
@@ -163,7 +185,7 @@ def parse_camb_file(filename, words, word):
 
             # Gets current_word from dictionary definition and jumps to the next line.
             current_word = line.split(current_type, 1)[0]
-            line = f.readline()
+            line = line_jump(f)
 
             # TODO  investigate about the inclusion of this line.
             if "HTML5" in line:
@@ -172,7 +194,7 @@ def parse_camb_file(filename, words, word):
             # Stores the word pronuntiation in case it exists.
             if "uk " in line or " us " in line or "|" in line:
                 current_pronuntiation = line
-                line = f.readline()
+                line = line_jump(f)
             else:
                 current_pronuntiation = " "
 
@@ -187,7 +209,7 @@ def parse_camb_file(filename, words, word):
                     data[current_definition].append(line[1:-1])
 
                 # Jumps to the next line.
-                line = f.readline()
+                line = line_jump(f)
 
             # Once the definition is fully parsed, writes the data to the output file.
             write_definition(filename, f"**{current_word}**", current_type, current_pronuntiation[0:-1], data)
@@ -241,7 +263,7 @@ def search_definitions(filename, words):
                 continue
 
     # Removes the aux file from system.
-    os.system(f"rm {AUX_FILENAME}")
+    # os.system(f"rm {AUX_FILENAME}")
 
     # Returns both not_found and no_def lists of words.
     return not_found, no_def

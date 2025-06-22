@@ -19,6 +19,8 @@ AUX_FILENAME = "aux.txt"
 # Number of attempt while executing camb tool.
 NUM_RETRIES = 4
 
+FORBIDDEN_PATTERNS = ["SEE ALSO", "COMPARE", "IDIOMS", "PHRASAL VERBS"]
+
 
 def camb_output_ok():
     """Returns if a camb execution output is valid or not.
@@ -43,9 +45,8 @@ def exec_camb(word):
         True if camb output is ok, False if not.
     """
     # Searches for definitions at least three times.
-    for tries in range(NUM_RETRIES, -1, -1):
+    for _ in range(NUM_RETRIES, -1, -1):
         try:
-            # Run the command  TODO  possibly changing this to "poetry run camb..."
             subprocess.run(
                 f"camb -n {word} | ansi2txt > {AUX_FILENAME}",
                 shell=True,
@@ -119,7 +120,7 @@ def line_jump(file_ptr):
     # If len(line) == 0, EOF has been reached and returns that same line.
     if len(line) == 0:
         return line
-    # If the first character of the line is an space, skips that line.
+    # If the first character of the line is a space or contains one of the forbidden expressions skips that line.
     elif line[0] == " ":
         return line_jump(file_ptr)
     else:
@@ -200,7 +201,7 @@ def parse_camb_file(filename, words, word):
 
             # Retrieves all definitions and examples asociated to that word type.
             # Checks that the length of the line is greater than 1 and that the characters ":" or "|" are in the line.
-            while len(line) > 1 and (line[0] == ":" or line[0] == "|"):
+            while line[0] == ":" or line[0] == "|":
                 # If the first character is ":", there is a word definition. If not, it is an example.
                 if line[0] == ":":
                     current_definition = line[2:-1]
@@ -212,7 +213,7 @@ def parse_camb_file(filename, words, word):
                 line = line_jump(f)
 
             # Once the definition is fully parsed, writes the data to the output file.
-            write_definition(filename, f"**{current_word}**", current_type, current_pronuntiation[0:-1], data)
+            write_definition(filename, f"**{current_word.strip()}**", current_type, current_pronuntiation[0:-1], data)
 
             # Adds one to the stored_flag.
             stored_dict[current_type] += 1

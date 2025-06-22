@@ -82,7 +82,7 @@ def check_input_line(line):
         line (string): One line from input file.
 
     Returns:
-        Returns
+        Returns the actual word.
     """
 
     # Checks that line is not empty
@@ -102,7 +102,7 @@ def check_input_line(line):
     else:
         word = line
 
-    return word
+    return word.replace("'", " ")
 
 
 def read_words(input):

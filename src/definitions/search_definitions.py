@@ -144,8 +144,9 @@ def parse_camb_file(filename, words, word):
     line = line_jump(f)
 
     # In case the word is a phrase, splits the phrase in all its subwords.
-    word_split = word.split(" ")
-    word_split.pop(-1)
+    # It is important to remove any final spaces.
+    word_split = word.strip().split(" ")
+    print(f"ws -> {word_split}")
 
     # Initialises a dictionary that keeps track of the number of definitions that have been stored for each word type.
     stored_dict = defaultdict(int)
@@ -182,7 +183,7 @@ def parse_camb_file(filename, words, word):
             continue
 
         # Checks that all subwords in the current word is in the output file line.
-        if all(x in line for x in word_split):
+        if all(x in line.split(current_type, 1)[0] for x in word_split):
 
             # Gets current_word from dictionary definition and jumps to the next line.
             current_word = line.split(current_type, 1)[0]

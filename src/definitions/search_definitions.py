@@ -19,7 +19,7 @@ AUX_FILENAME = "aux.txt"
 # Number of attempt while executing camb tool.
 NUM_RETRIES = 4
 
-FORBIDDEN_PATTERNS = ["SEE ALSO", "COMPARE", "IDIOMS", "PHRASAL VERBS"]
+FORBIDDEN_PATTERNS = ["SEE ALSO", "COMPARE", "IDIOMS", "PHRASAL VERBS", "SYNONYM"]
 
 
 def camb_output_ok():
@@ -88,6 +88,7 @@ def create_def_string(data):
 
 def write_definition(filename, word, word_type, pronuntiation, data):
     """Writes a word definition and examples into the output file.
+    If the number of definitions is below one, does not write anything.
 
     Args:
         filename (string): Output file name.
@@ -96,6 +97,11 @@ def write_definition(filename, word, word_type, pronuntiation, data):
         pronuntiation (string): Pronuntiation for the word.
         data (dict): Dictionary of definitions and examples.
     """
+
+    # If the number of definitions is below one, that means that the definitions did contain a "→" character.
+    if len(data) < 1:
+        return
+
     # Opens the output file.
     f = open(filename, "a", encoding="UTF8", newline="")
     writer = csv.writer(f)
@@ -146,7 +152,6 @@ def parse_camb_file(filename, words, word):
     # In case the word is a phrase, splits the phrase in all its subwords.
     # It is important to remove any final spaces.
     word_split = word.strip().split(" ")
-    print(f"ws -> {word_split}")
 
     # Initialises a dictionary that keeps track of the number of definitions that have been stored for each word type.
     stored_dict = defaultdict(int)
@@ -205,6 +210,11 @@ def parse_camb_file(filename, words, word):
             while line[0] == ":" or line[0] == "|":
                 # If the first character is ":", there is a word definition. If not, it is an example.
                 if line[0] == ":":
+                    # If the character "→" is in the line, the definition points to another definition and it is not stored.
+                    if "→" in line:
+                        line = line_jump(f)
+                        continue
+
                     current_definition = line[2:-1]
                     data[current_definition] = []
                 else:

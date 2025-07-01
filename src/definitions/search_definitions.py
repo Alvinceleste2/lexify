@@ -19,7 +19,7 @@ AUX_FILENAME = "aux.txt"
 # Number of attempt while executing camb tool.
 NUM_RETRIES = 4
 
-FORBIDDEN_PATTERNS = ["SEE ALSO", "COMPARE", "IDIOMS", "PHRASAL VERBS", "SYNONYM"]
+FORBIDDEN_PATTERNS = ["SEE ALSO", "COMPARE", "IDIOMS", "PHRASAL VERBS", "SYNONYMS"]
 
 
 def camb_output_ok():
@@ -126,7 +126,21 @@ def line_jump(file_ptr):
     # If len(line) == 0, EOF has been reached and returns that same line.
     if len(line) == 0:
         return line
-    # If the first character of the line is a space or contains one of the forbidden expressions skips that line.
+    # If len(line) == 1, the line is an empty line and the program must check that no forbidden expression is below.
+    elif len(line) == 1:
+        # Stores the empty line position in the file.
+        empty_line_pos = file_ptr.tell()
+        # Reads the next line of the file.
+        next_line = file_ptr.readline()
+
+        # If some of the forbidden expressions is encountered, jumps to the next line; else the empty line is returned.
+        if any(f in next_line for f in FORBIDDEN_PATTERNS):
+            return line_jump(file_ptr)
+        else:
+            file_ptr.seek(empty_line_pos)
+            return line
+
+    # If the first character of the line is a space jumps (to skip subdefinitions).
     elif line[0] == " ":
         return line_jump(file_ptr)
     else:

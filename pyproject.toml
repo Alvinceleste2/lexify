@@ -1,0 +1,31 @@
+[project]
+name = "lexify"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "alvinceleste"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cambridge (>=3.14,<4.0)",
+    "tqdm (>=4.67.1,<5.0.0)",
+    "rich (>=14.0.0,<15.0.0)"
+]
+
+[tool.poetry.scripts]
+lexify = "lexify:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.0"
+
+[tool.pytest.ini_options]
+addopts = "-ra --tb=short"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120

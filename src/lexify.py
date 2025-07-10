@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 
 from definitions.definitions import definitions_flow
+from families.families import families_flow
 
 # Output file (.csv) headers.
 HEADER = [
@@ -113,9 +114,9 @@ def main():
 
     elif args["mode"] == "1":
         print(f'🪢 FAMILIES MODE SELECTED 🪢 -> in : "{args["input"]}" | out : "{args["output"]}"')
-        # TODO  call families mode methods
+        families_flow(args)
     else:
-        print("NO VALID MODE SELECTED")
+        print("❌ NO VALID MODE SELECTED ❌")
 
     print()
 

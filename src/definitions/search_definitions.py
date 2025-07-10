@@ -4,7 +4,7 @@ import time
 import subprocess
 from collections import defaultdict
 
-from .common import FULL_TYPE_LIST
+from common.lists import FULL_TYPE_LIST
 
 # Ignores TqdmExperimentalWarning
 import warnings

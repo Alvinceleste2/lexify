@@ -1,4 +1,4 @@
-from .common import FULL_TYPE_LIST
+from .lists import FULL_TYPE_LIST
 
 # Ignores TqdmExperimentalWarning
 import warnings

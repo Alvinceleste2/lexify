@@ -1,27 +1,17 @@
-import csv
-import os
-import subprocess
-
 from common.read_words import read_words, InputFileParsingError
-from .search_definitions import search_definitions
-
-## Basic definitions flow is:
-# 1. Read words from input file
-# 2. Look for definitions for those parsed words.
-# 3. Print summary of execution.
 
 
 def print_summary(not_found, no_def):
     """Prints a summary of execution.
 
     Args:
-        not_found (list): List of words whose definitions could not be found in the dictionary.
-        no_def (list): List of words for which any definition was stored due to filters.
+        not_found (list): List of words whose families could not be found in the dictionary.
+        no_def (list): List of words for which any related word was stored due to filters.
     """
     print()
 
     if len(not_found) == 0 and len(no_def) == 0:
-        print("✅ Every word has been given an appropiate meaning.")
+        print("✅ Every word has been given an appropriate family.")
     else:
         if len(not_found) != 0:
             print(f"❌ ERROR! There have been {len(not_found)} word(s) which could not be found:")
@@ -34,13 +24,13 @@ def print_summary(not_found, no_def):
             print(no_def)
 
 
-def definitions_flow(args):
-    """Definitions mode main method.
+def family_flow(args):
+    """Families mode main method.
 
     Args:
         args (dict): Dictionary with parsed arguments.
     """
-    not_found, no_def = [], []
+    not_found, no_res = [], []
 
     try:
         words = read_words(args["input"])
@@ -50,6 +40,6 @@ def definitions_flow(args):
 
     print()
 
-    # Searches definitions for every parsed word and prints an execution summary.
-    not_found, no_def = search_definitions(args["output"], words)
+    # Searches families for every parsed word and prints an execution summary.
+    not_found, no_def = search_families(args["output"], words)
     print_summary(not_found, no_def)

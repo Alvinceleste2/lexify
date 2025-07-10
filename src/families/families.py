@@ -24,7 +24,7 @@ def print_summary(not_found, no_def):
             print(no_def)
 
 
-def family_flow(args):
+def families_flow(args):
     """Families mode main method.
 
     Args:

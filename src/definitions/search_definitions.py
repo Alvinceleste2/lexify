@@ -4,7 +4,7 @@ import time
 import subprocess
 from collections import defaultdict
 
-from common.lists import FULL_TYPE_LIST
+from common. import FULL_TYPE_LIST
 
 # Ignores TqdmExperimentalWarning
 import warnings
@@ -31,7 +31,10 @@ def camb_output_ok():
     f = open(AUX_FILENAME, "r", newline="")
 
     # If len() of first line is lower than 2 camb has not worked properly.
-    return not len(line := f.readline()) > 2
+    res = not len(line := f.readline()) > 2
+    f.close()
+
+    return res
 
 
 def exec_camb(word):
@@ -263,6 +266,7 @@ def search_definitions(filename, words):
     """Searches definitions for the received words and stores them into the output file.
 
     Args:
+        filename (string): Output file name.
         words (dict): Dictionary containing the input file parsed words.
 
     Returns:

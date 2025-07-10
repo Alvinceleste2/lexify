@@ -180,14 +180,14 @@ lxml = ["lxml"]
 
 [[package]]
 name = "cambridge"
-version = "3.14"
+version = "3.14.1"
 description = "cambridge is a terminal version of Cambridge Dictionary."
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "cambridge-3.14-py3-none-any.whl", hash = "sha256:31952ae4fc4a55949fc1e1eaa33ef41b5df240bcc74bac5d676200d6d40c8437"},
-    {file = "cambridge-3.14.tar.gz", hash = "sha256:8822f4f8ca566cfefda9dcc93531009be198e92c2e08fde6adde49be8d39cd65"},
+    {file = "cambridge-3.14.1-py3-none-any.whl", hash = "sha256:615afaef72e6540ce7d620016ddafde084f6970b80304f63133e64c0471dd712"},
+    {file = "cambridge-3.14.1.tar.gz", hash = "sha256:dfc4a68b05e977c28c9f951a56606e86a42ae45cb02ba85d3483d396ba872def"},
 ]
 
 [package.dependencies]
@@ -1029,4 +1029,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13"
-content-hash = "e9c1da2c4e483a6aae24b3a2a0e0b1a7cd3565b5078c373df749f5107d4b9db4"
+content-hash = "a39a03f7bfe42d1c75d5e069ea58d87449a8ef1c1c5660f39396869bdfba9d44"

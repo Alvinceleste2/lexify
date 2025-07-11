@@ -112,7 +112,7 @@ def read_words(input):
         input (string): Input file name.
 
     Return:
-        words (dict): Dictionary containing parsed words.
+        words (dict): Dictionary containing parsed words and a list of desired word types.
     """
 
     # Initialises the dictionary.

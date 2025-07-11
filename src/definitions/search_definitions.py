@@ -4,7 +4,7 @@ import time
 import subprocess
 from collections import defaultdict
 
-from common. import FULL_TYPE_LIST
+from common.lists import FULL_TYPE_LIST
 
 # Ignores TqdmExperimentalWarning
 import warnings
@@ -154,6 +154,7 @@ def parse_camb_file(filename, words, word):
     """Parses the camb tool output file for a word to find definitions, examples, etc.
 
     Args:
+        filename (string): Output file name.
         words (dict): Dictionary of the words whose definitions need to be parsed.
         word (string): Word whose definitions are being searched.
 

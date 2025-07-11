@@ -7,10 +7,6 @@ PRON_FILENAME = "pron.txt"
 DEF_FILENAME = "def.txt"
 
 
-def parse_grep_file():
-    pass
-
-
 def grep_output_ok():
     """Checks if the grep command output is ok and therefore the word was found inside the database.
 
@@ -20,8 +16,8 @@ def grep_output_ok():
 
     f = open(AUX_FILENAME, "r", newline="")
 
-    # If len() of first line is lower than 1, grep did not return any matches.
-    res = not len(line := f.readline()) > 2
+    # If len() of first line is lower than 2, grep did not return any matches.
+    res = not len(line := f.readline()) < 2
     f.close()
 
     return res
@@ -55,7 +51,50 @@ def exec_grep(filename, word):
         return False
 
 
-def parse_grep_file():
+def get_word_types(line):
+    """Parses one line of the grep output and retrieves the associated word types.
+
+    Args:
+        line (string): Line of the file.
+
+    Returns:
+        Returns the types that appear in the line between parenthesis and the result line, which contains the word itself.
+    """
+    line = line[1 : len(line) - 1]
+
+    types = []
+
+    while "(" in line and ")" in line:
+        word_type = line[line.index("(") + 1 : line.index(")")]
+        line = line.replace(f"({word_type})", "")
+        if word_type != "":
+            types.append(word_type)
+
+    return types, line
+
+
+def parse_grep_file(filename, words, word):
+    """Parses the grep command output file for a word to find its families.
+
+    Args:
+        filename (string): Output file name.
+        words (dict): Dictionary of the words whose families need to be stored.
+        word (string): Word whose families are being searched.
+    """
+
+    # Opens the grep output file in read mode.
+    f = open(AUX_FILENAME, "r", newline="")
+
+    # Reads the first line and identifies all word types for all possible families.
+    line = f.readline()
+    origin_types, _ = get_word_types(line)
+
+    # Initialises the data dictionary, where all parsed data will be stored.
+    data = defaultdict(list)
+
+    while len(line := f.readline()) != 0:
+        types, form = get_word_types(line)
+
     pass
 
 
@@ -64,7 +103,7 @@ def search_families(filename, words):
 
     Args:
         filename (string): Output file name.
-        words (list): List of parsed words.
+        words (dict): List of parsed words and the desired word types for each one.
     Returns:
         Both not_found and no_res lists of words.
     """

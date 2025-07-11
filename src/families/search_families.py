@@ -73,6 +73,56 @@ def get_word_types(line):
     return types, line
 
 
+def get_pronuntiation(word):
+    """Retrieves the pronuntiation for a specified word.
+
+    Args:
+        word (string): Word whose pronuntiation is being searched.
+
+    Returns:
+        Returns the pronuntiation of the word or empty string in case or error.
+    """
+    for tries in range(3, -1, -1):
+        os.system(f"camb -n {word} | ansi2txt > {PRON_FILENAME}")
+
+        f = open(PRON_FILENAME, "r")
+
+        if len(line := f.readline()) > 2:
+            time.sleep(0.05)
+            continue
+        else:
+            line = f.readline()
+            line = f.readline()
+
+            return line[0 : len(line) - 1]
+
+    return ""
+
+
+def write_file(filename, word, origin_types, word_type, pronuntiation, data):
+    f = open(filename, "a", encoding="UTF8", newline="")
+    writer = csv.writer(f)
+
+    origin_tt = ""
+    for o in origin_types:
+        origin_tt += o + ", "
+
+    origin_tt = origin_tt[0 : len(origin_tt) - 2]
+
+    writer.writerow(
+        [
+            word,
+            pronuntiation,
+            f"{origin_tt} ~> **{word_type}**",
+            create_form_string(data),
+            "",
+            "",
+        ]
+    )
+
+    f.close()
+
+
 def parse_grep_file(filename, words, word):
     """Parses the grep command output file for a word to find its families.
 
@@ -80,7 +130,13 @@ def parse_grep_file(filename, words, word):
         filename (string): Output file name.
         words (dict): Dictionary of the words whose families need to be stored.
         word (string): Word whose families are being searched.
+
+    Returns:
+        List of words that were not stored due to filters if everything went ok, False if not.
     """
+
+    # List that holds the word types that have not been stored due to filters.
+    filter_flag = []
 
     # Opens the grep output file in read mode.
     f = open(AUX_FILENAME, "r", newline="")
@@ -95,7 +151,23 @@ def parse_grep_file(filename, words, word):
     while len(line := f.readline()) != 0:
         types, form = get_word_types(line)
 
-    pass
+        # For each of the parsed word types, checks that the type has also been requested by user.
+        for t in types:
+            if t in words[word]:
+                data[t].append(form)
+            else:
+                filter_flag.append(t)
+
+    # Retrieves the pronuntiation for words.
+    if len(data.keys()) > 0:
+        for tt in data.keys():
+            # If pronuntiation is not obtained, the method returns False.
+            if (pron := get_pronuntiation(word)) == "":
+                return False
+
+            write_file(filename, f"**{word}**", origin_types, tt, pron, data[tt])
+
+    return filter_flag
 
 
 def search_families(filename, words):
@@ -109,7 +181,7 @@ def search_families(filename, words):
     """
 
     # Initialises not_found list of words that have not been found and no_res list of words whose families have been found but some of them were not stored.
-    not_found, no_res = [], []
+    not_found, no_res, not_in_dict = [], [], []
 
     # Iterates through the list of words to find families.
     for w in tqdm(words, desc="🍐 Searching families..."):

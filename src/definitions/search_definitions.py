@@ -1,4 +1,5 @@
 import os
+import re
 import csv
 import time
 import subprocess
@@ -51,10 +52,24 @@ def exec_camb(word):
     for _ in range(NUM_RETRIES, -1, -1):
         try:
             subprocess.run(
-                f"camb -n {word} | ansi2txt > {AUX_FILENAME}",
+                f"camb -n {word} > {AUX_FILENAME}",
                 shell=True,
                 check=True,
             )
+
+            # ANSI escape code pattern
+            ansi_escape = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
+
+            with open(AUX_FILENAME, "r") as infile:
+                content = infile.read()
+
+            # Remove ANSI codes
+            clean_text = ansi_escape.sub("", content)
+
+            # Write to new file
+            with open(AUX_FILENAME, "w") as outfile:
+                outfile.write(clean_text)
+
         except KeyboardInterrupt:
             print("Process interrupted by user (Ctrl+C)")
             exit(-1)

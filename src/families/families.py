@@ -1,4 +1,5 @@
 from common.read_words import read_words, InputFileParsingError
+from .search_families import search_families
 
 
 def print_summary(not_found, no_def):
@@ -33,7 +34,8 @@ def families_flow(args):
     not_found, no_res = [], []
 
     try:
-        words = read_words(args["input"])
+        # Spaces are not allowed in families mode.
+        words = read_words(args["input"], spaces_allowed=False)
     except InputFileParsingError as e:
         print(f"❌ There was an error while parsing the input file -> {str(e)}")
         return

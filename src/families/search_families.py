@@ -1,6 +1,16 @@
+import os
+import csv
 import subprocess
+from collections import defaultdict
 
-FAMILIES_TXT_DATABASE = "sources/families_db.txt"
+# Ignores TqdmExperimentalWarning
+import warnings
+from tqdm import TqdmExperimentalWarning
+from tqdm.rich import tqdm
+
+warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
+
+FAMILIES_TXT_DATABASE = "../../sources/families_db.txt"
 
 AUX_FILENAME = "aux.txt"
 PRON_FILENAME = "pron.txt"
@@ -99,6 +109,14 @@ def get_pronuntiation(word):
     return ""
 
 
+def create_form_string(data):
+    string = ""
+    for d in data:
+        string += f"* {d}\n"
+
+    return string
+
+
 def write_file(filename, word, origin_types, word_type, pronuntiation, data):
     f = open(filename, "a", encoding="UTF8", newline="")
     writer = csv.writer(f)
@@ -113,7 +131,7 @@ def write_file(filename, word, origin_types, word_type, pronuntiation, data):
         [
             word,
             pronuntiation,
-            f"{origin_tt} ~> **{word_type}**",
+            f"~> **{word_type}**",
             create_form_string(data),
             "",
             "",
@@ -137,6 +155,8 @@ def parse_grep_file(filename, words, word):
 
     # List that holds the word types that have not been stored due to filters.
     filter_flag = []
+    # Becomes True if the searched word has a family.
+    valid_flag = False
 
     # Opens the grep output file in read mode.
     f = open(AUX_FILENAME, "r", newline="")
@@ -149,6 +169,7 @@ def parse_grep_file(filename, words, word):
     data = defaultdict(list)
 
     while len(line := f.readline()) != 0:
+        valid_flag = True
         types, form = get_word_types(line)
 
         # For each of the parsed word types, checks that the type has also been requested by user.
@@ -167,7 +188,10 @@ def parse_grep_file(filename, words, word):
 
             write_file(filename, f"**{word}**", origin_types, tt, pron, data[tt])
 
-    return filter_flag
+    if not valid_flag:
+        return None
+    else:
+        return filter_flag
 
 
 def search_families(filename, words):
@@ -192,5 +216,7 @@ def search_families(filename, words):
             continue
         # If grep output is ok, the program continues.
         else:
-            # Now, grep parsing function can return True if all definitions were stored, or False if some of them could not be stored due to filters.
+            # Now, grep parsing function can return True if all families were stored, or False if some of them could not be stored due to filters.
             ret_list = parse_grep_file(filename, words, w)
+
+    return [], []

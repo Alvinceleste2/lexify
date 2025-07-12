@@ -1,4 +1,5 @@
 from .lists import FULL_TYPE_LIST
+from .lists import FULL_TYPE_LIST_NO_SPACES
 
 # Ignores TqdmExperimentalWarning
 import warnings
@@ -118,6 +119,7 @@ def read_words(input, spaces_allowed=True):
     Args:
         input (string): Input file name.
         spaces_allowed (bool): Defines if spaces are allowed or not. Used for word families mode.
+            Also, it defines whether it is necessary to use FULL_TYPE_LIST_NO_SPACES or not.
 
     Return:
         words (dict): Dictionary containing parsed words and a list of desired word types.
@@ -143,7 +145,7 @@ def read_words(input, spaces_allowed=True):
 
         # Makes all checks about the input line.
         try:
-            current_word = check_input_line(line)
+            current_word = check_input_line(line, spaces_allowed)
         except InputFileParsingError as e:
             raise InputFileParsingError(f"Error in line #{lines.index(line) + 1} of input file -> {str(e)}")
 
@@ -171,7 +173,10 @@ def read_words(input, spaces_allowed=True):
 
         # If no word type is specified, all word types are introduced.
         if len(types) == 0:
-            types = FULL_TYPE_LIST
+            if spaces_allowed:
+                types = FULL_TYPE_LIST
+            else:
+                types = FULL_TYPE_LIST_NO_SPACES
 
         # Saves specified word types into the dictionary.
         words[current_word] = types

@@ -1,5 +1,4 @@
 from .lists import FULL_TYPE_LIST
-from .lists import FULL_TYPE_LIST_NO_SPACES
 
 # Ignores TqdmExperimentalWarning
 import warnings
@@ -73,16 +72,14 @@ def is_balanced(string):
         raise InputFileParsingError("Parenthesis are not balanced.")
 
 
-def check_input_line(line, spaces_allowed=True):
+def check_input_line(line):
     """Checks if parenthesis are balanced.
     Checks that no other words are written between parenthesis.
     Retrieves the word before the first parenthesis. Checks if that exists.
     Checks that line is not empty.
-    Checks that there are no spaces (families mode).
 
     Args:
         line (string): One line from input file.
-        spaces_allowed (bool): Defines if spaces are allowed or not. Used for families mode.
 
     Returns:
         Returns the actual word.
@@ -91,11 +88,6 @@ def check_input_line(line, spaces_allowed=True):
     # Checks that line is not empty
     if len(line) == 0:
         raise InputFileParsingError("Empty lines are not allowed.")
-
-    # Checks that there are no spaces in case they were not allowed.
-    if not spaces_allowed:
-        if " " in line:
-            raise InputFileParsingError("Phrases, expressions or empty spaces are not allowed in families mode.")
 
     # Checks that line parenthesis are balanced.
     is_balanced(line)
@@ -113,13 +105,11 @@ def check_input_line(line, spaces_allowed=True):
     return word.replace("'", " ")
 
 
-def read_words(input, spaces_allowed=True):
+def read_words(input):
     """Reads words from input file and store the desired word types inside a dictionary.
 
     Args:
         input (string): Input file name.
-        spaces_allowed (bool): Defines if spaces are allowed or not. Used for word families mode.
-            Also, it defines whether it is necessary to use FULL_TYPE_LIST_NO_SPACES or not.
 
     Return:
         words (dict): Dictionary containing parsed words and a list of desired word types.
@@ -145,7 +135,7 @@ def read_words(input, spaces_allowed=True):
 
         # Makes all checks about the input line.
         try:
-            current_word = check_input_line(line, spaces_allowed)
+            current_word = check_input_line(line)
         except InputFileParsingError as e:
             raise InputFileParsingError(f"Error in line #{lines.index(line) + 1} of input file -> {str(e)}")
 
@@ -173,10 +163,7 @@ def read_words(input, spaces_allowed=True):
 
         # If no word type is specified, all word types are introduced.
         if len(types) == 0:
-            if spaces_allowed:
-                types = FULL_TYPE_LIST
-            else:
-                types = FULL_TYPE_LIST_NO_SPACES
+            types = FULL_TYPE_LIST
 
         # Saves specified word types into the dictionary.
         words[current_word] = types

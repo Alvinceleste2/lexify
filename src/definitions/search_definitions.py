@@ -294,7 +294,7 @@ def search_definitions(filename, words):
                 continue
 
     # Removes the aux file from system.
-    # os.system(f"rm {AUX_FILENAME}")
+    os.system(f"rm {AUX_FILENAME}")
 
     # Returns both not_found and no_def lists of words.
     return not_found, no_def

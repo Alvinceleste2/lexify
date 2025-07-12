@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 
 from definitions.definitions import definitions_flow
-from families.families import families_flow
 
 # Output file (.csv) headers.
 HEADER = [
@@ -57,19 +56,9 @@ def ask_args():
     if (output_filename := input()) == "":
         output_filename = DEFAULT_OUTPUT_FILENAME
 
-    # Asks for lexify's execution mode.
-    print(f'❓ EXECUTION MODE [0 for definitions, 1 for families] (leave blank for default "{DEFAULT_MODE}"):', end=" ")
-    if (mode := input()) == "":
-        mode = DEFAULT_MODE
-
-    if mode != "0" and mode != "1":
-        print("❌ ERROR. The specified mode does not exist. Aborting...")
-        raise ValueError()
-
     # Inserts all arguments inside the dictionary.
     args["input"] = input_filename
     args["output"] = output_filename
-    args["mode"] = mode
 
     return args
 
@@ -107,16 +96,8 @@ def main():
 
     print()
 
-    # Runs the appropriate methods depending on the selected mode.
-    if args["mode"] == "0":
-        print(f'📚 DEFINITIONS MODE SELECTED 📚 -> in : "{args["input"]}" | out : "{args["output"]}"')
-        definitions_flow(args)
-
-    elif args["mode"] == "1":
-        print(f'🪢 FAMILIES MODE SELECTED 🪢 -> in : "{args["input"]}" | out : "{args["output"]}"')
-        families_flow(args)
-    else:
-        print("❌ NO VALID MODE SELECTED ❌")
+    print(f'📚 LEXIFY 📚 -> in : "{args["input"]}" | out : "{args["output"]}"')
+    definitions_flow(args)
 
     print()
 

@@ -22,14 +22,14 @@ DEFAULT_MODE = "0"
 
 def print_init():
     """Prints initial screen."""
-    print(r" _               _  __       ")
-    print(r"| |             (_)/ _|      ")
-    print(r"| |     _____  ___| |_ _   _ ")
-    print(r"| |    / _ \ \/ / |  _| | | |")
-    print(r"| |___|  __/>  <| | | | |_| |")
-    print(r"\_____/\___/_/\_\_|_|  \__, |")
-    print(r"                        __/ |")
-    print(r"                       |___/ ")
+    print(r" _              _  __       ")
+    print(r"| |    _____  _(_)/ _|_   _ ")
+    print(r"| |   / _ \ \/ / | |_| | | |")
+    print(r"| |__|  __/>  <| |  _| |_| |")
+    print(r"|_____\___/_/\_\_|_|  \__, |")
+    print(r"                       |___/")
+
+    print()
 
 
 def ask_args():
@@ -82,9 +82,7 @@ def init_file(filename):
 def main():
     """Main funtion to initialise lexify tool."""
     # Prints initial screen.
-    # print_init()
-
-    print()
+    print_init()
 
     # Asks the user for execution arguments.
     try:
@@ -96,7 +94,7 @@ def main():
 
     print()
 
-    print(f'📚 LEXIFY 📚 -> in : "{args["input"]}" | out : "{args["output"]}"')
+    print(f'📚 in : "{args["input"]}" | out : "{args["output"]}" 📚')
     definitions_flow(args)
 
     print()
